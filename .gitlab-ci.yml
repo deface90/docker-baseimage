@@ -1,0 +1,7 @@
+before_script:
+  - docker version
+
+build:
+  script:
+    - docker build go-build
+    - docker build go-runtime
