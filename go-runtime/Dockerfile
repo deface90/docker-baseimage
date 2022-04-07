@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.15
 
 LABEL maintainer="deface <deface06@yandex.ru>"
 
@@ -15,7 +15,7 @@ COPY init.sh /init.sh
 RUN \
     chmod +x /usr/bin/app.sh /init.sh && \
     apk add --no-cache --update su-exec tzdata curl ca-certificates dumb-init && \
-    ln -s /sbin/su-exec /usr/local/bin/gos-u && \
+    ln -s /sbin/su-exec /usr/local/bin/gosu && \
     mkdir -p /home/$APP_USER && \
     adduser -s /bin/sh -D -u $APP_UID $APP_USER && chown -R $APP_USER:$APP_USER /home/$APP_USER && \
     delgroup ping && addgroup -g 998 ping && \

@@ -1,0 +1,62 @@
+name: build
+
+on:
+  push:
+    branches:
+    tags:
+
+jobs:
+
+  build_runtime_image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: build base.runtime latest image
+      if: ${{ github.ref == 'refs/heads/master' }}
+      env:
+        GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUBPKG }}
+        USERNAME: ${{ github.actor }}
+        GITHUB_REF: ${{ github.ref }}
+      run: |
+        ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
+        echo GITHUB_REF - $ref
+        echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
+        docker buildx build --push --platform linux/amd64 \
+          -t ghcr.io/${USERNAME}/baseimage/go-runtime:lastest \
+          go-runtime -f go-runtime/Dockerfile
+
+  build_go_image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: build build.go latest image
+      if: ${{ github.ref == 'refs/heads/master' }}
+      env:
+        GITHUB_PACKAGE_TOKEN: ${{ secrets.GITHUBPKG }}
+        USERNAME: ${{ github.actor }}
+        GITHUB_REF: ${{ github.ref }}
+      run: |
+        ref="$(echo ${GITHUB_REF} | cut -d'/' -f3)"
+        echo GITHUB_REF - $ref
+        echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
+        docker buildx build --push --platform linux/amd64 \
+          -t ghcr.io/${USERNAME}/baseimage/go-build:latest \
+          go-build -f go-build/Dockerfile
