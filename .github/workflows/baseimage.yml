@@ -31,7 +31,7 @@ jobs:
         echo GITHUB_REF - $ref
         echo ${GITHUB_PACKAGE_TOKEN} | docker login ghcr.io -u ${USERNAME} --password-stdin
         docker buildx build --push --platform linux/amd64 \
-          -t ghcr.io/${USERNAME}/baseimage/go-runtime:lastest \
+          -t ghcr.io/${USERNAME}/baseimage/go-runtime:latest \
           go-runtime -f go-runtime/Dockerfile
 
   build_go_image:
