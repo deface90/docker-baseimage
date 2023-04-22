@@ -1,11 +1,11 @@
-FROM golang:1.18-alpine
+FROM golang:1.20-alpine
 LABEL maintainer="deface <deface06@yandex.com>"
 
 ENV \
-    TIME_ZONE=Asia/Yekaterinburg \
+    TIME_ZONE=Europe/Moscow      \
     CGO_ENABLED=0                \
     GOVERALLS=0.0.11             \
-    GOLANGCI=1.45.2              
+    GOLANGCI=1.51.2              
 
 RUN \
     apk add --no-cache --update tzdata git bash curl && \

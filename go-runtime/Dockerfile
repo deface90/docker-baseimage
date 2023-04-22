@@ -1,10 +1,10 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
 LABEL maintainer="deface <deface06@yandex.ru>"
 
 ENV \
     TERM=xterm-color              \
-    TIME_ZONE=Asia/Yekaterinburg  \
+    TIME_ZONE=Europe/Moscow       \
     APP_USER=app                  \
     APP_UID=1001                  \
     DOCKER_GID=999         
